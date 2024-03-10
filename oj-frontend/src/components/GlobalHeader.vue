@@ -1,22 +1,14 @@
 <template>
-  <a-row
-    id="globalHeader"
-    class="grid-demo"
-    style="margin-bottom: 0"
-    align="center"
-  >
+  <a-row id="globalHeader" class="grid-demo" align="center" :wrap="false">
     <a-col flex="100px">
-      <div>
-        <a-menu-item
-          key="0"
-          :style="{ padding: 0, marginRight: '38px' }"
-          @click="handleIconClick"
-        >
-          <div class="titleBar">
-            <img class="icon" src="../assets/logo2.png" />
-            <div class="title">OJ 平台</div>
-          </div>
-        </a-menu-item>
+      <div
+        :style="{ padding: 0, marginRight: '38px' }"
+        @click="handleIconClick"
+      >
+        <div class="titleBar">
+          <img class="icon" src="../assets/logo2.png" />
+          <div class="title">OJ 平台</div>
+        </div>
       </div>
     </a-col>
     <a-col flex="auto">
@@ -26,7 +18,7 @@
           :selected-keys="selectedKeys"
           @menu-item-click="doMenuClick"
         >
-          <a-menu-item v-for="item in routes" :key="item.path">{{
+          <a-menu-item v-for="item in visibleRoutes" :key="item.path">{{
             item.name
           }}</a-menu-item>
           <!-- 从routes中获取path的值和name值并且显示 -->
@@ -34,7 +26,7 @@
       </div>
     </a-col>
     <a-col flex="100px">
-      <div>江涛</div>
+      <div>{{ store.state.user?.loginUser?.userName ?? "未登录" }}</div>
     </a-col>
   </a-row>
 </template>
@@ -42,9 +34,27 @@
 <script setup lang="ts">
 import { routes } from "../router/routes";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+import checkAccess from "@/access/checkAccess";
+import { ACCESS_ENUM } from "@/access/accessEnum";
 
+const store = useStore();
 const router = useRouter();
+
+//展示在菜单的路由,权限管理
+const visibleRoutes = computed(() => {
+  return routes.filter((item, index) => {
+    if (item.meta?.hideInMenu) {
+      return false;
+    }
+    //根据用户权限过滤菜单
+    if (!checkAccess(store.state.user.loginUser, item.meta?.access as string)) {
+      return false;
+    }
+    return true;
+  });
+});
 
 //默认主页
 const selectedKeys = ref(["/"]);
@@ -56,7 +66,6 @@ router.afterEach((to) => {
 // router.afterEach 是一个 Vue Router 钩子函数，它在每次路由导航完成后执行，
 // 并调用回调函数来更新 selectedKeys，以确保页面中显示的菜单项正确反映当前路由的选中状态。
 const doMenuClick = (key: string) => {
-  console.log("Clicking menu item with key:", key);
   router.push({
     path: key,
   });
@@ -68,6 +77,18 @@ const doMenuClick = (key: string) => {
 const handleIconClick = () => {
   router.push("/");
 };
+
+//获取用户登录信息模块
+
+// console.log(store.state.user.loginUser);
+
+//测试状态更新
+setTimeout(() => {
+  store.dispatch("user/getLoginUser", {
+    userName: "roger",
+    userRole: ACCESS_ENUM.ADMIN,
+  });
+}, 3000);
 </script>
 
 <style scoped>
