@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    管理员可见
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
   </div>
 </template>
