@@ -83,12 +83,12 @@ const handleIconClick = () => {
 // console.log(store.state.user.loginUser);
 
 //测试状态更新
-setTimeout(() => {
-  store.dispatch("user/getLoginUser", {
-    userName: "roger",
-    userRole: ACCESS_ENUM.ADMIN,
-  });
-}, 3000);
+// setTimeout(() => {
+//   store.dispatch("user/getLoginUser", {
+//     userName: "roger",
+//     userRole: ACCESS_ENUM.ADMIN,
+//   });
+// }, 3000);
 </script>
 
 <style scoped>
