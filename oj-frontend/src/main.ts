@@ -5,4 +5,6 @@ import "@arco-design/web-vue/dist/arco.css";
 import router from "./router";
 import store from "./store";
 import "@/access";
+import "/src/plugins/axios";
+
 createApp(App).use(store).use(ArcoVue).use(router).mount("#app");
