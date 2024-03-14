@@ -1,6 +1,12 @@
 <template>
   <div class="app">
-    <BasicLayout />
+    <template v-if="route.path.startsWith('/user')">
+      <router-view></router-view>
+    </template>
+
+    <template v-else>
+      <BasicLayout></BasicLayout>
+    </template>
   </div>
 </template>
 
@@ -9,6 +15,9 @@
 <script setup lang="ts">
 import BasicLayout from "@/layouts/BasicLayout";
 import { onMounted } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 
 /**
  * 全局初始化函数，全局单次调用的代码都可以写在这里
