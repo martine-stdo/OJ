@@ -1,11 +1,11 @@
 import { RouteRecordRaw } from "vue-router";
-import HomeView from "../views/HomeView.vue";
 import AdminView from "@/views/AdminView.vue";
 import NoAuthView from "@/views/NoAuthView.vue";
 import { ACCESS_ENUM } from "@/access/accessEnum";
 import LoginView from "@/views/user/LoginView.vue";
 import RegisterView from "@/views/user/RegisterView.vue";
 import UserLayout from "@/layouts/UserLayout.vue";
+import ExampleView from "@/views/ExampleView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -33,7 +33,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "浏览题目",
-    component: HomeView,
+    component: ExampleView,
   },
   {
     path: "/admin",
@@ -47,7 +47,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/hide",
     name: "隐藏页面",
-    component: HomeView,
+    component: ExampleView,
     meta: {
       hideInMenu: true,
     },
